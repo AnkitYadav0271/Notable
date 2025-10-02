@@ -68,12 +68,11 @@ export const verification = async (req, res) => {
           success:false,
           message:"The registration token has expired "
         });
-
-        return res.status(400).json({
+      }
+      return res.status(400).json({
           success:false,
           message:"Token verification failed  "
-        })
-      } 
+        }) 
     }
 
     const user = await User.findById(decoded.id);
