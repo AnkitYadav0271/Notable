@@ -63,41 +63,39 @@ export const verification = async (req, res) => {
     try {
       decoded = jwt.verify(token, process.env.SECRET_KEY);
     } catch (err) {
-      if (err.name ==="TokenExpiredError" ){
+      if (err.name === "TokenExpiredError") {
         return res.status(400).json({
-          success:false,
-          message:"The registration token has expired "
+          success: false,
+          message: "The registration token has expired ",
         });
       }
       return res.status(400).json({
-          success:false,
-          message:"Token verification failed  "
-        }) 
+        success: false,
+        message: "Token verification failed  ",
+      });
     }
 
     const user = await User.findById(decoded.id);
-    if(!user){
+    if (!user) {
       res.status(404).json({
-        success:false,
-        message:"User not found "
+        success: false,
+        message: "User not found ",
       });
-    };
+    }
 
     user.token = null;
     user.isVerified = true;
     await user.save();
-
+    
     return res.status(200).json({
-      success:true,
-      message:"Email verification successful"
-    })
-    console.log("decoded at userController verification",decoded);
-    console.log("user at userController verification",user);
+      success: true,
+      message: "Email verification successful",
+    });
   } catch (error) {
     return res.status(400).json({
-      success:false,
-      message:error.message, 
-    })
+      success: false,
+      message: error.message,
+    });
   }
 };
 
