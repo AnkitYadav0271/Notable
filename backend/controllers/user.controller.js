@@ -2,6 +2,7 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt, { decode } from "jsonwebtoken";
 import { verifyEmail } from "../verification/verify.email.js";
+import { Session } from "../models/session.model.js";
 
 export const RegisterUser = async (req, res) => {
   try {
@@ -86,7 +87,7 @@ export const verification = async (req, res) => {
     user.token = null;
     user.isVerified = true;
     await user.save();
-    
+
     return res.status(200).json({
       success: true,
       message: "Email verification successful",
@@ -100,3 +101,103 @@ export const verification = async (req, res) => {
 };
 
 //*_____________Verification methods ends here ______________//
+
+//?-----------------------------------------------------------------//
+
+//*_____________login controller starts here_____________________//
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "All field Required",
+      });
+    }
+
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Email or password is incorrect",
+      });
+    }
+
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (!checkPassword) {
+      return res.status(402).json({
+        success: false,
+        message: "email or password is incorrect",
+      });
+    }
+    //check if user is verified or not
+    if (!user.isVerified) {
+      return res.status(403).json({
+        success: false,
+        message: "verify your email then login",
+      });
+    }
+
+    //check for existing session if then we will delete it
+
+    const existingToken = await Session.findOne({ userId: user._id });
+    if (existingToken) {
+      Session.deleteOne({ userId: user._id });
+    }
+    //creating new Session
+    await Session.create({ userId: user._id });
+
+    //creating access tokens
+    const accessToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "10d",
+    });
+    const refreshToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+      expiresIn: "90d",
+    });
+
+    user.isLoggedIn = true;
+    await user.save();
+
+    return res.status(200).json({
+      success:true,
+      message:`Welcome Back ${user.username}`,
+      accessToken,
+      refreshToken,
+      user
+    })
+
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+//*_____________login controller ends here_____________________//
+
+//?-----------------------------------------------------------------//
+
+
+//*_____________logout controller starts here_____________________//
+
+export const logout = async(req,res) =>{
+  try {
+    const userId = req.userId;
+    await Session.deleteMany({userId});
+    await User.findByIdAndUpdate(userId,{isLoggedIn:false});
+    return res.status(200).json({
+      success:true,
+      message:"User Logged out successfully"
+    })
+    
+  } catch (error) {
+    return res.status(500).json({
+      success:false,
+      message:error.message
+    })
+  }
+}
+
+//*_____________logout controller ends here_____________________//
