@@ -1,6 +1,13 @@
-
 import { Router } from "express";
-import { forgotPassword, login, logout, RegisterUser, verification } from "../controllers/user.controller.js";
+import {
+  changePassword,
+  forgotPassword,
+  login,
+  logout,
+  RegisterUser,
+  verification,
+  verifyOtp,
+} from "../controllers/user.controller.js";
 import { isAuthenticated } from "../middlewares/isAuthenticated.middleware.js";
 
 const router = Router({ mergeParams: true });
@@ -8,7 +15,9 @@ const router = Router({ mergeParams: true });
 router.post("/register", RegisterUser);
 router.post("/verify", verification);
 router.post("/login", login);
-router.post("/logout",isAuthenticated, logout);
-router.post("/forgot-password",forgotPassword);
+router.post("/logout", isAuthenticated, logout);
+router.post("/forgot-password", forgotPassword);
+router.post("/verify-otp/:email", verifyOtp);
+router.post("/change-password/:email", changePassword);
 
 export default router;
