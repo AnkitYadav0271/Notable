@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt, { decode } from "jsonwebtoken";
 import { verifyEmail } from "../verification/verify.email.js";
 import { Session } from "../models/session.model.js";
+import { sendOtpMail } from "../verification/sendOtp.email.js";
 
 export const RegisterUser = async (req, res) => {
   try {
@@ -160,13 +161,12 @@ export const login = async (req, res) => {
     await user.save();
 
     return res.status(200).json({
-      success:true,
-      message:`Welcome Back ${user.username}`,
+      success: true,
+      message: `Welcome Back ${user.username}`,
       accessToken,
       refreshToken,
-      user
-    })
-
+      user,
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -179,25 +179,59 @@ export const login = async (req, res) => {
 
 //?-----------------------------------------------------------------//
 
-
 //*_____________logout controller starts here_____________________//
 
-export const logout = async(req,res) =>{
+export const logout = async (req, res) => {
   try {
     const userId = req.userId;
-    await Session.deleteMany({userId});
-    await User.findByIdAndUpdate(userId,{isLoggedIn:false});
+    await Session.deleteMany({ userId });
+    await User.findByIdAndUpdate(userId, { isLoggedIn: false });
     return res.status(200).json({
-      success:true,
-      message:"User Logged out successfully"
-    })
-    
+      success: true,
+      message: "User Logged out successfully",
+    });
   } catch (error) {
     return res.status(500).json({
-      success:false,
-      message:error.message
-    })
+      success: false,
+      message: error.message,
+    });
   }
-}
+};
 
 //*_____________logout controller ends here_____________________//
+
+//?-----------------------------------------------------------------//
+
+//*_____________Forgot Password  controller starts here_____________________//
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found with this email",
+      });
+    }
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiry = new Date(Date.now() + 10 * 60 * 1000);
+    user.otp = otp;
+    user.expiry = expiry;
+    await user.save();
+
+    await sendOtpMail(email, otp);
+
+    return res.status(200).json({
+      success: true,
+      message: "otp send successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+//*_____________Forgot Password  controller ends here_____________________//
