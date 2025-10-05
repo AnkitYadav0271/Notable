@@ -9,10 +9,11 @@ import {
   verifyOtp,
 } from "../controllers/user.controller.js";
 import { isAuthenticated } from "../middlewares/isAuthenticated.middleware.js";
+import { userSchema, validateUser } from "../validator/user.validator.js";
 
 const router = Router({ mergeParams: true });
 
-router.post("/register", RegisterUser);
+router.post("/register",validateUser(userSchema), RegisterUser);
 router.post("/verify", verification);
 router.post("/login", login);
 router.post("/logout", isAuthenticated, logout);
