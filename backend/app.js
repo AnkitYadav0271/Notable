@@ -4,6 +4,7 @@ import express, { urlencoded } from "express";
 import { configDotenv } from "dotenv";
 import connectMongo from "./database/db.init.js";
 import userRoute from "./routes/users.route.js";
+import cors from 'cors';
 //* imports ends here
 
 const app = express();
@@ -14,6 +15,10 @@ configDotenv();
 //*_______________Middlewares starts here ________________//
 app.use(express.json())
 app.use(express.urlencoded());
+app.use(cors({
+  origin:`http://localhost:5173`,
+  Credential:true
+}))
 
 //*_______________Middlewares starts here ________________//
 

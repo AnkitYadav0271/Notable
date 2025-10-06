@@ -8,7 +8,8 @@ import { sendOtpMail } from "../verification/sendOtp.email.js";
 export const RegisterUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    console.log("Body is here:",req.body)
+    if (!username.trim() || !email.trim() || !password.trim()) {
       return res.status(400).json({
         success: false,
         message: "all field requires",
@@ -42,7 +43,7 @@ export const RegisterUser = async (req, res) => {
       data: newUser,
     });
   } catch (error) {
-    res.status(500).json({
+   return res.status(500).json({
       success: false,
       message: error.message,
     });
