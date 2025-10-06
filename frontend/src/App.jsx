@@ -3,20 +3,39 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Verify from "./pages/Verify";
+import VerifyEmail from "./pages/VerifyEmail";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element:<> <ProtectedRoutes/> <Home /></>,
   },
   {
     path: "/signup",
     element: <Signup />,
   },
   {
+    path: "/verify",
+    element: <VerifyEmail />,
+  },
+
+  {
+    path: "/verify/:token",
+    element: <Verify />,
+  },
+  {
     path: "/login",
     element: <Login />,
   },
+
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+
 ]);
 const App = () => {
   return (

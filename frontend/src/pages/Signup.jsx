@@ -2,7 +2,6 @@ import React, { useReducer, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeClosed, EyeOff, Flag, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Flag, Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -66,7 +65,7 @@ const Signup = () => {
       );
 
       if (res.data.success) {
-        navigate("/login");
+        navigate("/verify");
         toast.success(res.data.message);
       }
     } catch (error) {
