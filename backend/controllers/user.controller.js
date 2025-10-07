@@ -8,7 +8,7 @@ import { sendOtpMail } from "../verification/sendOtp.email.js";
 export const RegisterUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log("Body is here:",req.body)
+    console.log("Body is here:", req.body);
     if (!username.trim() || !email.trim() || !password.trim()) {
       return res.status(400).json({
         success: false,
@@ -43,7 +43,7 @@ export const RegisterUser = async (req, res) => {
       data: newUser,
     });
   } catch (error) {
-   return res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -114,7 +114,7 @@ export const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: "All field Required",
+        message: "All fields are Required",
       });
     }
 
@@ -125,6 +125,8 @@ export const login = async (req, res) => {
         message: "Email or password is incorrect",
       });
     }
+
+    console.log("this is user", user);
 
     const checkPassword = await bcrypt.compare(password, user.password);
     if (!checkPassword) {
@@ -145,7 +147,8 @@ export const login = async (req, res) => {
 
     const existingToken = await Session.findOne({ userId: user._id });
     if (existingToken) {
-      Session.deleteOne({ userId: user._id });
+      
+     await Session.deleteOne({ userId: user._id });
     }
     //creating new Session
     await Session.create({ userId: user._id });
@@ -334,4 +337,3 @@ export const changePassword = async (req, res) => {
     });
   }
 };
-
