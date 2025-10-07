@@ -135,12 +135,6 @@ const Login = () => {
                       onChange={handleChange}
                       required
                     />
-                    <Link
-                      to={"/forgot-password"}
-                      className="text-blue-500 underline text-sm flex items-center justify-between"
-                    >
-                      Forgot your password
-                    </Link>
                     <Button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
@@ -156,6 +150,12 @@ const Login = () => {
                       )}
                     </Button>
                   </div>
+                  <Link
+                    to={"/forgot-password"}
+                    className="text-blue-500 underline text-sm flex items-center justify-between"
+                  >
+                    Forgot your password?
+                  </Link>
                   <div
                     className={`grid gap-2 ${err == "" ? "hidden" : "block"}`}
                   >

@@ -9,16 +9,40 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { getData } from "@/context/UserContext";
 import { Label } from "@radix-ui/react-label";
+import axios from "axios";
 import { CheckCircle, Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import { Link, useAsyncError } from "react-router-dom";
+import { Link, useAsyncError, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function ForgotPassword() {
-  const [loading, isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const navigate = useNavigate();
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      const res = await axios.post(
+        `http://localhost:6969/user/forgot-password`,
+        { email }
+      );
+      if (res.data.success) {
+        navigate(`/verify-otp/${email}`);
+        toast.success(res.data?.message);
+        setEmail("");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div className="relative w-full h-[760px] bg-green-100 overflow-hidden ">
       <div className="min-h-screen flex flex-col ">
@@ -78,9 +102,9 @@ function ForgotPassword() {
                     </div>
                   </div>
                 ) : (
-                  <form action="" className="space-y-6">
+                  <form onSubmit={handleForgotPassword} className="space-y-6">
                     <div className="space-y-2 relative text-gray-100">
-                      <Label>Email</Label>
+                      <Label className="text-foreground">Email</Label>
                       <Input
                         type={"email"}
                         name="email"
@@ -95,6 +119,7 @@ function ForgotPassword() {
                       className={
                         "w-full bg-green-600 text-white relative hover:bg-green-500 cursor-pointer"
                       }
+                      type = "submit"
                     >
                       {isLoading ? (
                         <>
@@ -109,7 +134,7 @@ function ForgotPassword() {
               </CardContent>
               <CardFooter className={"flex justify-center items-center"}>
                 <p>
-                  Remember your password
+                  Remember your password :
                   <Link
                     to={"/login"}
                     className="text-green-600 hover:underline font-medium relative"

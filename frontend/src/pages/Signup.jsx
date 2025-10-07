@@ -52,6 +52,12 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!state.username || !state.email || !state.password) {
+      setErr("All fields are required");
+      setIsLoading(false);
+      return;
+      
+    }
     try {
       setIsLoading(true);
       const res = await axios.post(
@@ -70,7 +76,7 @@ const Signup = () => {
       }
     } catch (error) {
       if (error.response && error.response.status == 400) {
-        setErr(error.response.data.message);
+        setErr(error.response?.data?.message);
       } else {
         setErr("UnExpected error: please try again");
       }
@@ -144,6 +150,7 @@ const Signup = () => {
                       type={showPassword ? "text" : "password"}
                       value={state.password}
                       onChange={handleChange}
+                      className={"pr-10"}
                       required
                     />
                     <Button
@@ -151,7 +158,7 @@ const Signup = () => {
                       onClick={() => setShowPassword(!showPassword)}
                       variant={"ghost"}
                       className={
-                        "absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent "
+                        "absolute  right-0 top-0 h-full px-3 py-2 hover:bg-transparent "
                       }
                     >
                       {showPassword ? (
@@ -164,7 +171,10 @@ const Signup = () => {
                   <div
                     className={`grid gap-2 ${err == "" ? "hidden" : "block"}`}
                   >
-                   <p className="capitalize text-red-600 "> {err ? err : ""} </p>
+                    <p className="capitalize text-red-600 ">
+                      {" "}
+                      {err ? err : ""}
+                    </p>
                   </div>
                 </div>
               </div>
