@@ -147,8 +147,7 @@ export const login = async (req, res) => {
 
     const existingToken = await Session.findOne({ userId: user._id });
     if (existingToken) {
-      
-     await Session.deleteOne({ userId: user._id });
+      await Session.deleteOne({ userId: user._id });
     }
     //creating new Session
     await Session.create({ userId: user._id });
@@ -164,6 +163,19 @@ export const login = async (req, res) => {
     user.isLoggedIn = true;
     await user.save();
 
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 90 * 24 * 60 * 60 * 1000,
+    });
     return res.status(200).json({
       success: true,
       message: `Welcome Back ${user.username}`,
@@ -335,5 +347,25 @@ export const changePassword = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+
+export const getCurrentUser = async(req,res) =>{
+  try {
+    const user = User.findById(req.userId);
+    if(!user){
+      return res.status(404).json({
+        success:false,
+        message:"User not found"
+      })
+    }
+   return res.status(200).json({
+      success:true,
+      message:"User found",
+      user
+    })
+  } catch (error) {
+   return res.status(500).json({ success: false, message: err.message });
   }
 };

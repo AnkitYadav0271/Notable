@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   changePassword,
   forgotPassword,
+  getCurrentUser,
   login,
   logout,
   RegisterUser,
@@ -12,7 +13,7 @@ import { isAuthenticated } from "../middlewares/isAuthenticated.middleware.js";
 import { userSchema, validateUser } from "../validator/user.validator.js";
 
 const router = Router({ mergeParams: true });
-
+router.post("/",isAuthenticated,getCurrentUser)
 router.post("/register",validateUser(userSchema), RegisterUser);
 router.post("/verify", verification);
 router.post("/login", login);
