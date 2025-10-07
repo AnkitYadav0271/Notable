@@ -4,6 +4,7 @@ import express, { urlencoded } from "express";
 import { configDotenv } from "dotenv";
 import connectMongo from "./database/db.init.js";
 import userRoute from "./routes/users.route.js";
+import notesRoute from "./routes/notes.routes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 //* imports ends here
@@ -20,7 +21,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: `http://localhost:5173`,
-    Credential: true,
+    credentials: true,
   })
 );
 
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 
 //*---------------------------Routes Starts here -----------------------------//
 app.use("/user", userRoute);
+app.use("/user/notes",notesRoute);
 
 //*---------------------------Routes Ends here -----------------------------//
 
