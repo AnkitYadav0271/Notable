@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 
 //*---------------------------Routes Starts here -----------------------------//
 app.use("/user", userRoute);
-app.use("/user/notes",notesRoute);
+app.use("/user/", notesRoute);
 
 //*---------------------------Routes Ends here -----------------------------//
 

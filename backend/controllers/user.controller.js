@@ -8,7 +8,7 @@ import { sendOtpMail } from "../verification/sendOtp.email.js";
 export const RegisterUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log("Body is here:", req.body);
+    
     if (!username.trim() || !email.trim() || !password.trim()) {
       return res.status(400).json({
         success: false,
@@ -352,7 +352,7 @@ export const changePassword = async (req, res) => {
 
 
 export const getCurrentUser = async(req,res) =>{
-  console.log("accessing the getrequrest");
+  
   try {
     const user = await User.findById(req.userId);
 

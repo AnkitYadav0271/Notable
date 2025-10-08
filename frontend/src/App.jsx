@@ -9,54 +9,27 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import ForgotPassword from "./pages/ForgotPassword";
 import VerifyOtp from "./pages/VerifyOtp";
 import ChangePassword from "./pages/ChangePassword";
+import UserHome from "./pages/UserHome";
+import { UserProvider } from "./context/UserContext";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <>
-        <Home />
-      </>
-    ),
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/verify",
-    element: <VerifyEmail />,
-  },
-
-  {
-    path: "/verify/:token",
-    element: <Verify />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-
-  {
-    path: "/forgot-password",
-    element: <ForgotPassword />,
-  },
-
-  {
-    path: "/verify-otp/:email",
-    element: <VerifyOtp />,
-  },
-
-  {
-    path: "/change-password/:email",
-    element: <ChangePassword />,
-  },
+  { path: "/", element: <Home /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/verify", element: <VerifyEmail /> },
+  { path: "/verify/:token", element: <Verify /> },
+  { path: "/login", element: <Login /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
+  { path: "/verify-otp/:email", element: <VerifyOtp /> },
+  { path: "/change-password/:email", element: <ChangePassword /> },
+  { path: "/dashboard", element: <UserHome /> },
+  { path: "/add-note", element: <UserHome /> },
 ]);
+
 const App = () => {
   return (
-    <div>
-      <RouterProvider router={router}></RouterProvider>
-    </div>
+<div>
+      <RouterProvider router={router} />
+</div>
   );
 };
 
