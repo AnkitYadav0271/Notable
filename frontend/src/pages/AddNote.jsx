@@ -1,37 +1,45 @@
-
-
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { getData } from '@/context/UserContext'
-import { Label } from '@radix-ui/react-dropdown-menu';
-import { Loader2 } from 'lucide-react';
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { getData } from "@/context/UserContext";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { Loader2 } from "lucide-react";
+import React, { useReducer, useState } from "react";
+import { Link } from "react-router-dom";
 
 function AddNote() {
-    const {user} = getData();
-    const [isLoading,setLoading] = useState(false);
+  const { user } = getData();
+  const [isLoading, setLoading] = useState(false);
+  const noteInitState = {
+    title: "",
+    description: "",
+    id: "",
+  };
+  const [state, dispatch] = useReducer(noteReducer, noteInitState);
   return (
-    <div className='min-h-screen bg-green-100 p-4 flex items-center justify-center'>
-        <div className="w-full max-w-md  space-y-6">
-            <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-green-600">
-              Hello {user?.username}
-            </h1>
-            <p className="text-gray-600">
-              All of your thoughts and ideas here.
-            </p>
-          </div>
+    <div className="min-h-screen bg-green-100 p-4 flex items-center justify-center">
+      <div className="w-full max-w-md  space-y-6">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight text-green-600">
+            Hello {user?.username}
+          </h1>
+          <p className="text-gray-600">All of your thoughts and ideas here.</p>
+        </div>
 
-          <Card className="w-full">
+        <Card className="w-full">
           <CardHeader className={"space-y-1"}>
             <CardTitle className={"text-2xl text-center text-green-600"}>
               AddNote{" "}
             </CardTitle>
             <CardDescription className={"text-center"}>
-              
-            Share save and organize your thoughts with Notable.
+              Share save and organize your thoughts with Notable.
             </CardDescription>
           </CardHeader>
 
@@ -63,7 +71,6 @@ function AddNote() {
                       placeholder="Write description here"
                       required
                     />
-                    
                   </div>
                 </div>
               </div>
@@ -73,7 +80,6 @@ function AddNote() {
           <CardFooter className="flex flex-col gap-2">
             <Button
               type="submit"
-              
               className="w-full bg-green-600 hover:bg-green-500 cursor-pointer"
             >
               {isLoading ? (
@@ -87,11 +93,9 @@ function AddNote() {
             </Button>
           </CardFooter>
         </Card>
-
-        </div>
-      
+      </div>
     </div>
-  )
+  );
 }
 
 export default AddNote;

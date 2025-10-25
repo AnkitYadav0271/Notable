@@ -29,9 +29,9 @@ const Home = () => {
   }, [navigate, setUser]);
   return (
     <div>
-      <Navbar />
+
       <Hero />
-      <Footer />
+
     </div>
   );
 };

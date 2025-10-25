@@ -11,25 +11,32 @@ import VerifyOtp from "./pages/VerifyOtp";
 import ChangePassword from "./pages/ChangePassword";
 import UserHome from "./pages/UserHome";
 import { UserProvider } from "./context/UserContext";
+import { Layout } from "./Layout/Layout";
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/verify", element: <VerifyEmail /> },
-  { path: "/verify/:token", element: <Verify /> },
-  { path: "/login", element: <Login /> },
-  { path: "/forgot-password", element: <ForgotPassword /> },
-  { path: "/verify-otp/:email", element: <VerifyOtp /> },
-  { path: "/change-password/:email", element: <ChangePassword /> },
-  { path: "/dashboard", element: <UserHome /> },
-  { path: "/add-note", element: <UserHome /> },
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {path:"/",element:<Home/>},
+      { path: "/signup", element: <Signup /> },
+      { path: "/verify", element: <VerifyEmail /> },
+      { path: "/verify/:token", element: <Verify /> },
+      { path: "/login", element: <Login /> },
+      { path: "/forgot-password", element: <ForgotPassword /> },
+      { path: "/verify-otp/:email", element: <VerifyOtp /> },
+      { path: "/change-password/:email", element: <ChangePassword /> },
+      { path: "/dashboard", element: <UserHome /> },
+      { path: "/add-note", element: <UserHome /> },
+    ],
+  },
 ]);
 
 const App = () => {
   return (
-<div>
+    <div>
       <RouterProvider router={router} />
-</div>
+    </div>
   );
 };
 
