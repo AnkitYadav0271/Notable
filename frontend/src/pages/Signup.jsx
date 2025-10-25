@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Flag, Loader2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupReducer = (state, action) => {
   switch (action.type) {
@@ -196,6 +196,13 @@ const Signup = () => {
                 "Signup"
               )}
             </Button>
+
+            <Link
+                    to={"/login"}
+                    className="text-blue-500 underline text-sm flex items-center justify-between"
+                  >
+                    Already have account? Login
+                  </Link>
           </CardFooter>
         </Card>
       </div>

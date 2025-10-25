@@ -1,10 +1,17 @@
 
 
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { getData } from '@/context/UserContext'
-import React from 'react'
+import { Label } from '@radix-ui/react-dropdown-menu';
+import { Loader2 } from 'lucide-react';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 function AddNote() {
     const {user} = getData();
+    const [isLoading,setLoading] = useState(false);
   return (
     <div className='min-h-screen bg-green-100 p-4 flex items-center justify-center'>
         <div className="w-full max-w-md  space-y-6">
@@ -20,26 +27,25 @@ function AddNote() {
           <Card className="w-full">
           <CardHeader className={"space-y-1"}>
             <CardTitle className={"text-2xl text-center text-green-600"}>
-              Login{" "}
+              AddNote{" "}
             </CardTitle>
             <CardDescription className={"text-center"}>
-              Login to get started with Notable.
+              
+            Share save and organize your thoughts with Notable.
             </CardDescription>
           </CardHeader>
 
           <CardContent>
             <form>
               <div className="flex flex-col gap-6">
-                {/* Email Field */}
+                {/* Heading Field */}
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">Note Title</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    name="email"
+                    id="noteHeading"
+                    type="text"
+                    name="noteHeading"
                     placeholder="m@example.com"
-                    value={state.email}
-                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -47,47 +53,17 @@ function AddNote() {
                 {/* Password Field */}
                 <div className="grid gap-2">
                   <div>
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">Description</Label>
                   </div>
 
                   <div className="relative ">
                     <Input
-                      id="password"
-                      name="password"
-                      placeholder="Enter your password"
-                      type={showPassword ? "text" : "password"}
-                      value={state.password}
-                      onChange={handleChange}
+                      id="noteDescription"
+                      name="noteDescription"
+                      placeholder="Write description here"
                       required
                     />
-                    <Button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      variant={"ghost"}
-                      className={
-                        "absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent "
-                      }
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <Eye className="w-4 h-4 text-gray-600" />
-                      )}
-                    </Button>
-                  </div>
-                  <Link
-                    to={"/forgot-password"}
-                    className="text-blue-500 underline text-sm flex items-center justify-between"
-                  >
-                    Forgot your password?
-                  </Link>
-                  <div
-                    className={`grid gap-2 ${err == "" ? "hidden" : "block"}`}
-                  >
-                    <p className="capitalize text-red-600 ">
-                      {" "}
-                      {err ? err : ""}{" "}
-                    </p>
+                    
                   </div>
                 </div>
               </div>
@@ -97,16 +73,16 @@ function AddNote() {
           <CardFooter className="flex flex-col gap-2">
             <Button
               type="submit"
-              onClick={handleSubmit}
+              
               className="w-full bg-green-600 hover:bg-green-500 cursor-pointer"
             >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin"> </Loader2>
-                  Logging in to your account...
+                  Saving... your thought
                 </>
               ) : (
-                "Login"
+                "Save"
               )}
             </Button>
           </CardFooter>
@@ -118,4 +94,4 @@ function AddNote() {
   )
 }
 
-export default AddTask
+export default AddNote;

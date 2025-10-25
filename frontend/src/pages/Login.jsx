@@ -157,6 +157,13 @@ const Login = () => {
                   >
                     Forgot your password?
                   </Link>
+
+                  <Link
+                    to={"/signup"}
+                    className="text-blue-500 underline text-sm flex items-center justify-between"
+                  >
+                    Do'nt have account? Signup
+                  </Link>
                   <div
                     className={`grid gap-2 ${err == "" ? "hidden" : "block"}`}
                   >
